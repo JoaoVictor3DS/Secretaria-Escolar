@@ -1,0 +1,107 @@
+passo a passo para melhorar o projeto de secretaria escolar:
+
+Projeto Secretaria Python + Django
+Data termino de auto avaliação: 18/06
+O Projeto deverá ser entregue via GITHUB e o link para o repositório enviado pelo classroom.
+
+O que será avaliado no projeto?
+Estrutura do Código
+Será verificado se:
+O código está bem organizado em arquivos e pastas
+O uso de funções e métodos bem definidos, evitando código repetido.
+O código está modular, reutilizável e fácil de entender?
+A estrutura do projeto segue as boas práticas do Django
+Boas Práticas de Programação:
+Será verificado se:
+O código é eficiente em termos de desempenho, evitando redundâncias e otimizando
+consultas ao banco de dados.
+O uso de comentários é adequado? O código está documentado onde necessário?
+
+Uso de Controle de Versão:
+Será verificado se:
+O projeto está versionado corretamente utilizando o Git?
+foi feito commits frequentes, com mensagens explicativas e claras?
+
+Funcionalidades Implementadas
+Autenticação e Permissões:
+Será verificado se:
+
+O sistema exige login para funcionalidades sensíveis? Ele está usando autenticação
+corretamente?
+A autenticação de usuários e autorização de acesso estão funcionando corretamente (uso
+de @login_required, permissões específicas para tipos de usuários, criação correta dos
+usuários e grupos e seus respectivos acessos, etc.)
+Cadastro de Dados (Notas, Contratos, etc.)
+O formulário de cadastro de dados está bem estruturado? Os dados estão sendo
+corretamente validados?
+O sistema é capaz de realizar ações como adicionar, editar e remover dados, e verificar se
+essas funcionalidades estão implementadas corretamente.
+
+Integração com o Banco de Dados:
+Será verificado se:
+
+O sistema está armazenando os dados corretamente no banco de dados?
+A integração com o banco de dados está bem estruturada, com migrations feitas
+corretamente e o banco sendo utilizado de forma eficiente?
+
+Interface de Usuário (UI)
+
+Será verificado se:
+O sistema é responsivo, ou seja, ele se adapta corretamente a diferentes tamanhos
+de tela?
+A interface é simples e intuitiva, com feedback claro para o usuário (mensagens de
+sucesso ou erro)?
+
+Usabilidade:
+Será verificado se:
+A navegação dentro do sistema é fácil e intuitiva?
+O design da interface segue boas práticas de usabilidade, como botões visíveis, campos de
+formulário corretamente rotulados e uma experiência de usuário fluída?
+
+Documentação
+Será verificado se:
+Foi fornecida uma documentação clara sobre como usar o sistema? (Instruções de
+instalação, requisitos, e como rodar o sistema localmente).
+
+Comentários no Código:
+Será verificado se:
+O código está bem comentado, explicando funções/métodos críticos e a lógica do sistema?
+
+Testes do Sistema
+Será verificado se:
+O sistema foi testado manualmente? Deverá ser apresentado casos de uso testados e
+explicar os testes realizados (por exemplo, cadastrar uma nota, um aluno, um professor,
+realizar o login, etc.).
+
+Validação do Sistema:
+Será verificado se:
+O sistema foi validado para garantir que os fluxos principais estão funcionando corretamente?
+(login, cadastro de alunos, visualização de dados, etc.).
+
+Segurança
+Será verificado se:
+A aplicação utiliza corretamente o CSRF token nos formulários do Django e implementa
+melhorias de segurança?
+
+Avaliação de Performance
+Será verificado se:
+
+O sistema está otimizado em termos de desempenho, como por exemplo, consultas
+eficientes ao banco de dados?
+O sistema lida bem com grandes volumes de dados (em caso de cadastro de muitos alunos,
+notas ou registros de usuários).
+
+Inovações e Funcionalidades Extras
+Será verificado se:
+implementou funcionalidades adicionais e criativas além dos requisitos básicos?
+(Exemplo: geração de relatórios, exportação de dados, integração com APIs externas, etc.)
+
+O projeto será avaliado nas seguintes parâmetros:
+
+Estrutura do Código – 20%
+Funcionalidades Implementadas – 30%
+Interface de Usuário (UI) – 15%
+Documentação e Comentários – 10%
+Testes do Sistema – 10%
+Segurança e Performance – 10%
+Inovações e Funcionalidades Extras – 5%

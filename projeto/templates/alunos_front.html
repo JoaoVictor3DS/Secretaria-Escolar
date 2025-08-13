@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alunos - Frontend</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        #back-button {
+            margin-bottom: 20px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Alunos (API DRF)</h1>
+    <button id="back-button">Voltar para Home</button>
+    <ul id="alunos-list"></ul>
+    <script>
+        document.getElementById('back-button').addEventListener('click', () => {
+            window.location.href = '/home/';
+        });
+
+        async function loadAlunosData() {
+            const accessToken = localStorage.getItem('access_token');
+            if (!accessToken) {
+                window.location.href = '/login/';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/alunos/', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const ul = document.getElementById('alunos-list');
+                    ul.innerHTML = '';
+                    data.forEach(aluno => {
+                        const li = document.createElement('li');
+                        li.textContent = `${aluno.full_name} (${aluno.class_choices}) - ${aluno.email_aluno}`;
+                        ul.appendChild(li);
+                    });
+                } else if (response.status === 401) {
+                    await refreshToken();
+                    loadAlunosData();
+                } else {
+                    document.getElementById('alunos-list').innerHTML = '<li>Erro ao carregar alunos.</li>';
+                }
+            } catch (error) {
+                document.getElementById('alunos-list').innerHTML = '<li>Ocorreu um erro ao carregar alunos.</li>';
+            }
+        }
+
+        async function refreshToken() {
+            const refreshToken = localStorage.getItem('refresh_token');
+            if (!refreshToken) {
+                window.location.href = '/login/';
+                return;
+            }
+            try {
+                const response = await fetch('/api/token/refresh/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ refresh: refreshToken })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('access_token', data.access);
+                    localStorage.setItem('refresh_token', data.refresh);
+                } else {
+                    window.location.href = '/login/';
+                }
+            } catch (error) {
+                window.location.href = '/login/';
+            }
+        }
+
+        loadAlunosData();
+    </script>
+</body>
+</html>

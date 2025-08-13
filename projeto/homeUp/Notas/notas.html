@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Notas</title>
+	<style>.expansive{cursor:pointer;background:#f0f0f0;margin:5px 0;padding:10px;border-radius:5px;}.details{display:none;background:#fafafa;padding:10px;border:1px solid #ddd;border-radius:5px;}</style>
+	<script>
+		function toggleDetails(id){var el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block';}
+		const notas=[{id:1,aluno:'João Silva',turma:'1º Ano A',materia:'Matemática',presenca:9.5,atividade:8.0,avaliativa:7.5,final:8.3}];
+		window.onload=function(){let c=document.getElementById('notas-list');notas.forEach(n=>{let d=document.createElement('div');d.className='expansive';d.setAttribute('onclick',`toggleDetails('nota${n.id}')`);d.innerHTML=`<b>Turma:</b> ${n.turma} &nbsp;|&nbsp; <b>Matéria:</b> ${n.materia}`;let det=document.createElement('div');det.className='details';det.id=`nota${n.id}`;det.innerHTML=`<b>Aluno:</b> ${n.aluno}<br><b>Turma:</b> ${n.turma}<br><b>Matéria:</b> ${n.materia}<br><b>Nota de Presença:</b> ${n.presenca}<br><b>Nota de Atividade:</b> ${n.atividade}<br><b>Nota Avaliativa:</b> ${n.avaliativa}<br><b>Nota Final:</b> ${n.final}`;c.appendChild(d);c.appendChild(det);});}
+	</script>
+</head>
+<body>
+	<h2>Notas</h2>
+	<div id="notas-list"></div>
+</body>
+</html>

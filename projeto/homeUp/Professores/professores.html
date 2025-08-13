@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Professores</title>
+	<style>.expansive{cursor:pointer;background:#f0f0f0;margin:5px 0;padding:10px;border-radius:5px;}.details{display:none;background:#fafafa;padding:10px;border:1px solid #ddd;border-radius:5px;}</style>
+	<script>
+		function toggleDetails(id){var el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block';}
+		const professores=[{id:1,nome:'Carlos Souza',materias:'Matemática, Física',telefone:'(11) 91234-5678',email:'carlos@email.com',endereco:'Rua dos Professores, 45',cpf:'12345678901',registro:'2025-001',grupo:'Professores'}];
+		window.onload=function(){let c=document.getElementById('professores-list');professores.forEach(p=>{let d=document.createElement('div');d.className='expansive';d.setAttribute('onclick',`toggleDetails('prof${p.id}')`);d.innerHTML=`<b>Nome:</b> ${p.nome} &nbsp;|&nbsp; <b>Matérias:</b> ${p.materias}`;let det=document.createElement('div');det.className='details';det.id=`prof${p.id}`;det.innerHTML=`<b>Nome:</b> ${p.nome}<br><b>Telefone:</b> ${p.telefone}<br><b>Email:</b> ${p.email}<br><b>Endereço:</b> ${p.endereco}<br><b>CPF:</b> ${p.cpf}<br><b>Número de Registro:</b> ${p.registro}<br><b>Matérias:</b> ${p.materias}<br><b>Grupo:</b> ${p.grupo}`;c.appendChild(d);c.appendChild(det);});}
+	</script>
+</head>
+<body>
+	<h2>Professores</h2>
+	<div id="professores-list"></div>
+</body>
+</html>

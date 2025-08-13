@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        .expansive {cursor:pointer; background:#f0f0f0; margin:5px 0; padding:10px; border-radius:5px;}
+        .details {display:none; background:#fafafa; padding:10px; border:1px solid #ddd; border-radius:5px;}
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background: #fff;
+            color: #111;
+        }
+        header {
+            background: #000;
+            color: #fff;
+            padding: 30px 0 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px #0002;
+        }
+        #main-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px #0002;
+            padding: 32px 40px 40px 40px;
+            border: 2px solid #000;
+        }
+        #navigation-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 30px;
+            justify-content: flex-start;
+        }
+        #navigation-buttons button {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 16px 32px;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 8px #0001;
+        }
+        #navigation-buttons button:hover {
+            background: #000;
+            color: #fff;
+        }
+        #content {
+            margin-top: 20px;
+            border-top: 1px solid #222;
+            padding-top: 30px;
+            min-height: 200px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background: #fff;
+            border: 1.5px solid #000;
+            border-radius: 7px;
+            margin-bottom: 12px;
+            padding: 16px 18px;
+            color: #111;
+            font-size: 1.08em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .agenda-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .agenda-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0001;
+            padding: 18px 22px 16px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-left: 5px solid #000;
+            border: 1.5px solid #000;
+        }
+        .agenda-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+        }
+        .agenda-date {
+            color: #444;
+            font-size: 0.98em;
+        }
+        .agenda-lembrete {
+            color: #fff;
+            background: #000;
+            border-radius: 6px;
+            padding: 2px 10px;
+            font-size: 0.95em;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .crud-btn {
+            margin-left: 5px;
+            background: #fff;
+            color: #000;
+            border: 1.5px solid #000;
+            border-radius: 5px;
+            padding: 4px 10px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .crud-btn:hover {
+            background: #000;
+            color: #fff;
+        }
+        #logout-button {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 12px 28px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 30px;
+            margin-left: 10px;
+            transition: background 0.2s, color 0.2s;
+        }
+        #logout-button:hover {
+            background: #000;
+            color: #fff;
+        }
+        /* Formulários monocromáticos */
+        form {
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            max-width: 420px;
+            margin: 2rem auto 1.5rem auto;
+            padding: 2rem 2.5rem 1.5rem 2.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        form label {
+            color: #111;
+            font-weight: bold;
+            display: block;
+            margin-top: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        form input, form select {
+            width: 100%;
+            padding: 0.5rem 0.7rem;
+            border: 1.5px solid #222;
+            border-radius: 4px;
+            background: #fff;
+            color: #111;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border 0.2s;
+        }
+        form input:focus, form select:focus {
+            border: 2px solid #000;
+            outline: none;
+            background: #f7f7f7;
+        }
+        form button[type="submit"] {
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        form button[type="submit"]:hover {
+            background: #fff;
+            color: #000;
+            border: 1.5px solid #000;
+        }
+        select[multiple], select[multiple]:focus {
+            height: 5.5em;
+            background: #fff;
+            color: #111;
+        }
+        /* Esconde as setas dos campos number para manter monocromático */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+        /* Mensagens de erro/alerta */
+        .error, .alert {
+            color: #fff;
+            background: #111;
+            border: 1.5px solid #000;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 700px) {
+            #main-container { padding: 10px; }
+            #navigation-buttons button { padding: 10px 12px; font-size: 1em; }
+            form { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo, <span id="usergroup"></span> <span id="username"></span>!</h1>
+        <p>Este é o seu painel inicial. Use os botões abaixo para acessar os dados:</p>
+    </header>
+    <div id="main-container">
+        <div id="navigation-buttons"></div>
+        <div id="content"></div>
+        <button id="logout-button">Sair</button>
+    </div>
+    <script>
+        // Array global de usuários (deve ser preenchido via API em loadUserData ou loadModelData)
+    let usuarios = [];
+    let alunos = [];
+    let materias = [];
+
+        // Função utilitária para buscar nome pelo id
+        function getNomeUsuario(id) {
+            if (!id) return '--';
+            const usuario = usuarios.find(u => u.id === id);
+            return usuario ? (usuario.nome || usuario.full_name || usuario.first_name || usuario.username || '--') : '--';
+        }
+        function getNomeAluno(id) {
+            if (!id) return '--';
+            const aluno = alunos.find(a => a.id === id);
+            return aluno ? (aluno.full_name || aluno.nome || '--') : '--';
+        }
+        function getNomeMateria(id) {
+            if (!id) return '--';
+            const materia = materias.find(m => m.id === id);
+            return materia ? (materia.name || materia.nome || '--') : '--';
+        }
+        // Função global para abas expansivas
+        function toggleDetails(id) {
+            var el = document.getElementById(id);
+            if (el) el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+        document.getElementById('logout-button').addEventListener('click', () => {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = '/login/';
+        });
+
+        let userGroups = [];
+        let userModelsPermissions = {};
+
+        async function loadUserData() {
+            // Carregar todos os usuários, alunos e matérias para os arrays globais
+            try {
+                const [usersResp, alunosResp, materiasResp] = await Promise.all([
+                    fetch('/api/usuarios/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/alunos/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/materias/', { headers: { 'Authorization': `Bearer ${accessToken}` } })
+                ]);
+                usuarios = usersResp.ok ? await usersResp.json() : [];
+                alunos = alunosResp.ok ? await alunosResp.json() : [];
+                materias = materiasResp.ok ? await materiasResp.json() : [];
+            } catch (e) {
+                usuarios = [];
+                alunos = [];
+                materias = [];
+            }
+            const accessToken = localStorage.getItem('access_token');
+            if (!accessToken) {
+                window.location.href = '/login/';
+                return;
+            }
+            try {
+                const userResponse = await fetch('/api/user-data/', {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    document.getElementById('username').textContent = userData.username;
+                    let groupStr = userData.groups && userData.groups.length > 0 ? `[${userData.groups.join(', ')}]` : '[Sem grupo]';
+                    document.getElementById('usergroup').textContent = groupStr;
+                    userGroups = userData.groups || [];
+                    userModelsPermissions = userData.models_permissions || {};
+                    let accessList = Object.entries(userModelsPermissions)
+                        .filter(([model, perms]) => perms.length > 0)
+                        .map(([model, perms]) => `${model}: [${perms.join(', ')}]`).join('\n');
+                    console.log('Permissões do grupo:', groupStr, '\nAcesso permitido:', accessList);
+                    let accessDiv = document.getElementById('group-access-info');
+                    if (accessDiv) accessDiv.remove();
+                    renderNavigation();
+                } else if (userResponse.status === 401) {
+                    await refreshToken();
+                    // Após tentar renovar, se ainda não autenticado, força logout
+                    const newToken = localStorage.getItem('access_token');
+                    if (!newToken) {
+                        window.location.href = '/login/';
+                        return;
+                    }
+                    // Tenta novamente
+                    loadUserData();
+                } else if (userResponse.status === 403) {
+                    alert('Você não tem permissão para acessar os dados do usuário.');
+                    window.location.href = '/login/';
+                } else {
+                    alert('Erro ao carregar dados do usuário.');
+                }
+            } catch (error) {
+                window.location.href = '/login/';
+            }
+        }
+
+        function renderNavigation() {
+            const nav = document.getElementById('navigation-buttons');
+            nav.innerHTML = '';
+            Object.keys(userModelsPermissions).forEach(model => {
+                if (userModelsPermissions[model].includes('view')) {
+                    addNavigationButton(capitalize(model), model);
+                }
+            });
+        }
+
+        function addNavigationButton(text, model) {
+            const button = document.createElement('button');
+            button.textContent = text;
+            button.onclick = () => loadModelData(model);
+            document.getElementById('navigation-buttons').appendChild(button);
+        }
+
+        async function loadModelData(model) {
+            const accessToken = localStorage.getItem('access_token');
+            let url = `/api/${model}/`;
+            let contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `<h2>${capitalize(model)}</h2><p>Carregando...</p>`;
+            try {
+                const response = await fetch(url, { headers: { 'Authorization': `Bearer ${accessToken}` } });
+                if (response.ok) {
+                    const data = await response.json();
+                    window.lastModelSample = window.lastModelSample || {};
+                    // Se não houver dados, tenta buscar um sample de outro lugar (ex: userModelsPermissions)
+                    if (data.length > 0) {
+                        window.lastModelSample[model] = data[0];
+                    } else if (!window.lastModelSample[model]) {
+                        // Cria um sample vazio baseado nas permissões do model
+                        window.lastModelSample[model] = {};
+                    }
+                    renderModelList(model, data);
+                } else if (response.status === 401) {
+                    await refreshToken();
+                    loadModelData(model);
+                } else if (response.status === 403) {
+                    contentDiv.innerHTML = `<p>Você não tem permissão para acessar ${model}.<br>Verifique se seu grupo possui permissão.</p>`;
+                } else {
+                    contentDiv.innerHTML = `<p>Erro ao carregar ${model}.</p>`;
+                }
+            } catch (error) {
+                contentDiv.innerHTML = `<p>Ocorreu um erro ao carregar ${model}.</p>`;
+            }
+        }
+
+        function renderModelList(model, data) {
+            const contentDiv = document.getElementById('content');
+            // Agendas como abas expansivas
+            if (model === 'agendas') {
+                contentDiv.innerHTML = `<h2>Agendas</h2>`;
+                if (data.length === 0) {
+                    contentDiv.innerHTML += '<p>Nenhum evento de agenda encontrado.</p>';
+                } else {
+                    data.forEach((item, idx) => {
+                        let compact = getModelCompact(model, item);
+                        let div = document.createElement('div');
+                        div.className = 'expansive';
+                        div.setAttribute('onclick', `toggleDetails('${model}${idx}')`);
+                        div.innerHTML = compact;
+                        let details = document.createElement('div');
+                        details.className = 'details';
+                        details.id = `${model}${idx}`;
+                        details.innerHTML = getModelDetails(model, item);
+                        contentDiv.appendChild(div);
+                        contentDiv.appendChild(details);
+                    });
+                }
+                if ((userModelsPermissions[model] || []).includes('add')) {
+                    const addBtn = document.createElement('button');
+                    addBtn.textContent = `Adicionar Evento`;
+                    addBtn.onclick = () => showAddForm(model);
+                    contentDiv.appendChild(addBtn);
+                }
+                return;
+            }
+            contentDiv.innerHTML = `<h2>${capitalize(model)}</h2>`;
+            if (data.length === 0) {
+                contentDiv.innerHTML += '<p>Nenhum registro encontrado.</p>';
+            } else {
+                data.forEach((item, idx) => {
+                    // Compactado: principais campos
+                    let compact = getModelCompact(model, item);
+                    let div = document.createElement('div');
+                    div.className = 'expansive';
+                    div.setAttribute('onclick', `toggleDetails('${model}${idx}')`);
+                    div.innerHTML = compact;
+                    let details = document.createElement('div');
+                    details.className = 'details';
+                    details.id = `${model}${idx}`;
+                    details.innerHTML = getModelDetails(model, item);
+                    contentDiv.appendChild(div);
+                    contentDiv.appendChild(details);
+                });
+            }
+            if ((userModelsPermissions[model] || []).includes('add')) {
+                const addBtn = document.createElement('button');
+                addBtn.textContent = `Adicionar ${capitalize(model)}`;
+                addBtn.onclick = () => showAddForm(model);
+                contentDiv.appendChild(addBtn);
+            }
+        }
+
+        // Função para campos compactados por model
+        function getModelCompact(model, item) {
+            switch(model) {
+                case 'alunos':
+                    return `<b>Nome:</b> ${item.full_name || item.nome || ''} &nbsp;|&nbsp; <b>Série:</b> ${item.class_choices || item.serie || ''} &nbsp;|&nbsp; <b>Grupo:</b> Alunos`;
+                case 'responsaveis':
+                    return `<b>Nome:</b> ${item.first_name || item.nome || ''} ${item.last_name || ''} &nbsp;|&nbsp; <b>Telefone:</b> ${item.phone_number || item.telefone || ''} &nbsp;|&nbsp; <b>Alunos:</b> ${Array.isArray(item.alunos) ? item.alunos.map(getNomeAluno).join(', ') : (item.alunos_nomes || '--')}`;
+                case 'materias':
+                    return `<b>Nome:</b> ${item.name || item.nome || ''}`;
+                case 'professores':
+                    return `<b>Nome:</b> ${item.first_name || item.nome || ''} ${item.last_name || ''} &nbsp;|&nbsp; <b>Matérias:</b> ${Array.isArray(item.materias) ? item.materias.map(getNomeMateria).join(', ') : (item.materias_nomes || '--')}`;
+                case 'turmas':
+                    return `<b>Turma:</b> ${item.turma || ''} &nbsp;|&nbsp; <b>Representante:</b> ${(item.representante_nome || getNomeAluno(item.representante) || (item.representante && (item.representante.full_name || item.representante.nome)) || '--')}`;
+                case 'contratos':
+                    return `<b>Responsável:</b> ${(item.responsavel_nome || getNomeUsuario(item.responsavel) || '')} &nbsp;|&nbsp; <b>Contrato Assinado:</b> ${(item.signed_contract || '')}`;
+                case 'notas':
+                    return `<b>Turma:</b> ${item.turma_nome || (item.turma && (item.turma.turma || item.turma.nome)) || ''} &nbsp;|&nbsp; <b>Matéria:</b> ${item.materia_nome || getNomeMateria(item.materia) || (item.materia && (item.materia.name || item.materia.nome)) || ''}`;
+                case 'desempenhoacademico':
+                    return `<b>Turma:</b> ${item.turma_nome || (item.turma && (item.turma.turma || item.turma.nome)) || ''} &nbsp;|&nbsp; <b>Matéria:</b> ${item.materia_nome || getNomeMateria(item.materia) || (item.materia && (item.materia.name || item.materia.nome)) || ''}`;
+                case 'presencas':
+                    return `<b>Aluno:</b> ${item.aluno_nome || getNomeAluno(item.aluno) || item.aluno?.full_name || item.aluno || ''} &nbsp;|&nbsp; <b>Status:</b> ${item.status || ''}`;
+                case 'agendas':
+                    return `<b>Usuário:</b> ${getNomeUsuario(item.usuario) || item.usuario || ''} &nbsp;|&nbsp; <b>Título:</b> ${item.titulo || ''} &nbsp;|&nbsp; <b>Data:</b> ${formatDate(item.data_evento)}`;
+                case 'livros':
+                    return `<b>Título:</b> ${item.titulo || ''} &nbsp;|&nbsp; <b>Status:</b> ${item.status || ''}`;
+                default:
+                    return getModelDisplay(model, item);
+            }
+        }
+
+        // Função para detalhes expandidos por model
+        function getModelDetails(model, item) {
+            // Helper para mostrar campos extras não exibidos explicitamente
+            function renderExtraFields(item, shownKeys) {
+                let html = '';
+                Object.keys(item).forEach(key => {
+                    if (!shownKeys.includes(key) && typeof item[key] !== 'object' && item[key] !== null && item[key] !== '') {
+                        let label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        html += `<br><b>${label}:</b> ${item[key]}`;
+                    }
+                });
+                return html;
+            }
+            switch(model) {
+                case 'alunos': {
+                    let shown = ['full_name','nome','phone_number_aluno','telefone','email_aluno','email','cpf_aluno','cpf','birthday_aluno','nascimento','class_choices','serie','responsavel_nome','responsavel'];
+                    return `
+                        <b>Nome Completo:</b> ${(item.full_name || item.nome || '--')}<br>
+                        <b>Telefone:</b> ${(item.phone_number_aluno || item.telefone || '--')}<br>
+                        <b>Email:</b> ${(item.email_aluno || item.email || '--')}<br>
+                        <b>CPF:</b> ${(item.cpf_aluno || item.cpf || '--')}<br>
+                        <b>Data de Nascimento:</b> ${(item.birthday_aluno || item.nascimento || '--')}<br>
+                        <b>Série:</b> ${(item.class_choices || item.serie || '--')}<br>
+                        <b>Responsável:</b> ${(item.responsavel_nome || getNomeUsuario(item.responsavel) || '--')}<br>
+                        <b>Grupo:</b> Alunos
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'responsaveis': {
+                    let shown = ['first_name','nome','last_name','phone_number','telefone','email','address','cpf','birthday','alunos_nomes','alunos'];
+                    return `
+                        <b>Nome:</b> ${(item.first_name || item.nome || '--')} ${(item.last_name || '--')}<br>
+                        <b>Telefone:</b> ${(item.phone_number || item.telefone || '--')}<br>
+                        <b>Email:</b> ${(item.email || '--')}<br>
+                        <b>Endereço:</b> ${(item.address || '--')}<br>
+                        <b>CPF:</b> ${(item.cpf || '--')}<br>
+                        <b>Data de Nascimento:</b> ${(item.birthday || '--')}<br>
+                        <b>Alunos:</b> ${(Array.isArray(item.alunos_nomes) && item.alunos_nomes.length > 0) ? item.alunos_nomes.join(', ') : '--'}<br>
+                        <b>Grupo:</b> Responsáveis
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'materias': {
+                    let shown = ['name','nome','professor_nome','professor'];
+                    return `
+                        <b>Nome:</b> ${(item.name || item.nome || '--')}<br>
+                        <b>Professor Responsável:</b> ${(item.professor_nome || getNomeUsuario(item.professor) || (item.professor && (item.professor.full_name || item.professor.nome)) || '--')}
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'professores': {
+                    let shown = ['first_name','nome','last_name','phone_number','telefone','email','address','cpf','registration_number','materias_nomes','materias'];
+                    return `
+                        <b>Nome:</b> ${(item.first_name || item.nome || '--')} ${(item.last_name || '--')}<br>
+                        <b>Telefone:</b> ${(item.phone_number || item.telefone || '--')}<br>
+                        <b>Email:</b> ${(item.email || '--')}<br>
+                        <b>Endereço:</b> ${(item.address || '--')}<br>
+                        <b>CPF:</b> ${(item.cpf || '--')}<br>
+                        <b>Número de Registro:</b> ${(item.registration_number || '--')}<br>
+                        <b>Matérias:</b> ${(Array.isArray(item.materias_nomes) && item.materias_nomes.length > 0) ? item.materias_nomes.join(', ') : '--'}<br>
+                        <b>Grupo:</b> Professores
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'turmas': {
+                    let shown = ['turma','materias_nomes','materias','representante_nome','representante','vice_representante_nome','vice_representante','padrinho_nome','padrinho'];
+                    return `
+                        <b>Turma:</b> ${(item.turma || '--')}<br>
+                        <b>Matérias:</b> ${(Array.isArray(item.materias_nomes) && item.materias_nomes.length > 0) ? item.materias_nomes.join(', ') : '--'}<br>
+                        <b>Representante:</b> ${(item.representante_nome || getNomeAluno(item.representante) || (item.representante && (item.representante.full_name || item.representante.nome)) || '--')}<br>
+                        <b>Vice-Representante:</b> ${(item.vice_representante_nome || getNomeAluno(item.vice_representante) || (item.vice_representante && (item.vice_representante.full_name || item.vice_representante.nome)) || '--')}<br>
+                        <b>Padrinho:</b> ${(item.padrinho_nome || getNomeUsuario(item.padrinho) || (item.padrinho && (item.padrinho.full_name || item.padrinho.nome)) || '--')}
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'contratos': {
+                    let shown = ['turma_nome','aluno_nome','responsavel_nome','email_responsavel','signed_contract'];
+                    return `
+                        <b>Turma:</b> ${(item.turma_nome || '--')}<br>
+                        <b>Aluno:</b> ${(item.aluno_nome || getNomeUsuario(item.aluno) || '--')}<br>
+                        <b>Responsável:</b> ${(item.responsavel_nome || getNomeUsuario(item.responsavel) || '--')}<br>
+                        <b>Email do Responsável:</b> ${(item.email_responsavel || '--')}<br>
+                        <b>Contrato Assinado:</b> <a href='${item.signed_contract || '#'}'>${item.signed_contract || '--'}</a>
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'notas': {
+                    let shown = ['aluno_nome','aluno','turma_nome','turma','materia_nome','materia','nota_presenca','nota_atividade','nota_avaliativa','nota_final'];
+                    return `
+                        <b>Aluno:</b> ${(item.aluno_nome || getNomeUsuario(item.aluno) || (item.aluno && (item.aluno.full_name || item.aluno.nome)) || '--')}<br>
+                        <b>Turma:</b> ${(item.turma_nome || (item.turma && (item.turma.turma || item.turma.nome)) || '--')}<br>
+                        <b>Matéria:</b> ${(item.materia_nome || (item.materia && (item.materia.name || item.materia.nome)) || '--')}<br>
+                        <b>Nota de Presença:</b> ${(item.nota_presenca || '--')}<br>
+                        <b>Nota de Atividade:</b> ${(item.nota_atividade || '--')}<br>
+                        <b>Nota Avaliativa:</b> ${(item.nota_avaliativa || '--')}<br>
+                        <b>Nota Final:</b> ${(item.nota_final || '--')}
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'desempenhoacademico': {
+                    let shown = ['aluno_nome','aluno','turma_nome','turma','materia_nome','materia','bimestre_1','bimestre_2','bimestre_3','bimestre_4','media_final'];
+                    return `
+                        <b>Aluno:</b> ${(item.aluno_nome || getNomeUsuario(item.aluno) || (item.aluno && (item.aluno.full_name || item.aluno.nome)) || '--')}<br>
+                        <b>Turma:</b> ${(item.turma_nome || (item.turma && (item.turma.turma || item.turma.nome)) || '--')}<br>
+                        <b>Matéria:</b> ${(item.materia_nome || (item.materia && (item.materia.name || item.materia.nome)) || '--')}<br>
+                        <b>Nota 1º Bimestre:</b> ${(item.bimestre_1 || '--')}<br>
+                        <b>Nota 2º Bimestre:</b> ${(item.bimestre_2 || '--')}<br>
+                        <b>Nota 3º Bimestre:</b> ${(item.bimestre_3 || '--')}<br>
+                        <b>Nota 4º Bimestre:</b> ${(item.bimestre_4 || '--')}<br>
+                        <b>Média Final:</b> ${(item.media_final || '--')}
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'presencas': {
+                    let shown = ['aluno_nome','aluno','data','status','observacao'];
+                    return `
+                        <b>Aluno:</b> ${(item.aluno_nome || getNomeUsuario(item.aluno) || item.aluno?.full_name || item.aluno || '--')}<br>
+                        <b>Data:</b> ${(item.data || '--')}<br>
+                        <b>Status:</b> ${(item.status || '--')}<br>
+                        <b>Observação:</b> ${(item.observacao || '--')}
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'agendas': {
+                    let shown = ['usuario','titulo','descricao','data_evento','arquivo','lembrete'];
+                    return `
+                        <b>Usuário:</b> ${(getNomeUsuario(item.usuario) || item.usuario || '--')}<br>
+                        <b>Título:</b> ${(item.titulo || '--')}<br>
+                        <b>Descrição:</b> ${(item.descricao || '--')}<br>
+                        <b>Data do Evento:</b> ${formatDate(item.data_evento) || '--'}<br>
+                        <b>Arquivo:</b> <a href='${item.arquivo || '#'}'>${item.arquivo || '--'}</a><br>
+                        <b>Lembrete Ativado:</b> ${(item.lembrete ? 'Sim' : 'Não')}
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                case 'livros': {
+                    let shown = ['titulo','autor','resumo','status','usuario_em_uso_nome','usuario_em_uso'];
+                    return `
+                        <b>Título:</b> ${(item.titulo || '--')}<br>
+                        <b>Autor:</b> ${(item.autor || '--')}<br>
+                        <b>Resumo:</b> ${(item.resumo || '--')}<br>
+                        <b>Status:</b> ${(item.status || '--')}<br>
+                        <b>Usuário em Uso:</b> ${(getNomeUsuario(item.usuario_em_uso) || item.usuario_em_uso_nome || (item.usuario_em_uso && (item.usuario_em_uso.full_name || item.usuario_em_uso.nome)) || '--')}
+                        ${renderExtraFields(item, shown)}
+                    `;
+                }
+                default:
+                    return JSON.stringify(item);
+            }
+        }
+        
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('pt-BR', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function addCrudButtons(li, model, item, canAdd, canEdit, canDelete, canView) {
+            if (canEdit) {
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Editar';
+                editBtn.className = 'crud-btn';
+                editBtn.onclick = () => showEditForm(model, item);
+                li.appendChild(editBtn);
+            }
+            if (canDelete) {
+                const delBtn = document.createElement('button');
+                delBtn.textContent = 'Deletar';
+                delBtn.className = 'crud-btn';
+                delBtn.onclick = () => deleteItem(model, item);
+                li.appendChild(delBtn);
+            }
+        }
+
+        function getModelDisplay(model, item) {
+            // Exibe campos principais dinamicamente
+            let keys = Object.keys(item);
+            // Mostra até 3 campos principais
+            let display = keys.slice(0, 3).map(k => `${k}: ${item[k]}`).join(' | ');
+            return display;
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function showAddForm(model) {
+            const contentDiv = document.getElementById('content');
+            let formHtml = `<h3>Adicionar ${capitalize(model)}</h3><form id="add-form" enctype="multipart/form-data">`;
+            let sample = window.lastModelSample && window.lastModelSample[model];
+            // Fallback de campos para models conhecidos
+            const fallbackFields = {
+                alunos: [
+                    {key: 'full_name', label: 'Nome Completo'},
+                    {key: 'phone_number_aluno', label: 'Nº do celular', desc: '(--)---- ----'},
+                    {key: 'email_aluno', label: 'Email do aluno'},
+                    {key: 'cpf_aluno', label: 'CPF do aluno'},
+                    {key: 'birthday_aluno', label: 'Data de nascimento'},
+                    {key: 'class_choices', label: 'Turma'},
+                    {key: 'responsavel', label: 'Responsável'}
+                ],
+                professores: [
+                    {key: 'first_name', label: 'Nome'},
+                    {key: 'last_name', label: 'Sobrenome'},
+                    {key: 'phone_number', label: 'Nº do celular', desc: '(--)---- ----'},
+                    {key: 'email', label: 'Email do professor'},
+                    {key: 'address', label: 'Endereço'},
+                    {key: 'cpf', label: 'CPF do professor'},
+                    {key: 'registration_number', label: 'Número de Registro'}
+                ],
+                turmas: [
+                    {key: 'nome', label: 'Nome da turma'},
+                    {key: 'ano', label: 'Ano'},
+                    {key: 'turno', label: 'Turno'}
+                ],
+                contratos: [
+                    {key: 'turma', label: 'Turma'},
+                    {key: 'aluno', label: 'Aluno'},
+                    {key: 'responsavel', label: 'Responsável'},
+                    {key: 'email_responsavel', label: 'Email do responsável'},
+                    {key: 'signed_contract', label: 'Contrato assinado'}
+                ],
+                notas: [
+                    {key: 'aluno', label: 'Aluno'},
+                    {key: 'materia', label: 'Matéria'},
+                    {key: 'nota_presenca', label: 'Nota Presença'},
+                    {key: 'nota_atividade', label: 'Nota Atividade'},
+                    {key: 'nota_avaliativa', label: 'Nota Avaliativa'},
+                    {key: 'nota_final', label: 'Nota Final'}
+                ],
+                desempenhoacademico: [
+                    {key: 'aluno', label: 'Aluno'},
+                    {key: 'turma', label: 'Turma'},
+                    {key: 'materia', label: 'Matéria'},
+                    {key: 'media_final', label: 'Média Final'}
+                ],
+                presencas: [
+                    {key: 'aluno', label: 'Aluno'},
+                    {key: 'data', label: 'Data'},
+                    {key: 'status', label: 'Status'},
+                    {key: 'observacao', label: 'Observação'}
+                ],
+                livros: [
+                    {key: 'titulo', label: 'Título'},
+                    {key: 'autor', label: 'Autor'},
+                    {key: 'status', label: 'Status'},
+                    {key: 'usuario_em_uso', label: 'Usuário em uso', desc: 'id do usuário'},
+                ]
+            };
+            if (sample && Object.keys(sample).length > 0) {
+                Object.keys(sample).forEach(key => {
+                    if (key === 'id' || key === 'registration_number') return;
+                    let label = capitalize(key.replace(/_/g, ' '));
+                    let desc = '';
+                    if (key.toLowerCase().includes('phone')) desc = '(--)---- ----';
+                    if (key.toLowerCase().includes('arquivo') || key.toLowerCase().includes('file')) {
+                        formHtml += `<label>${label}:</label><input type="file" name="${key}">`;
+                    } else if (typeof sample[key] === 'boolean' || key.toLowerCase().includes('lembrete')) {
+                        formHtml += `<label>${label}:</label><input type="checkbox" name="${key}" value="1">`;
+                    } else if (key.toLowerCase().includes('data') || key.toLowerCase().includes('birthday')) {
+                        formHtml += `<label>${label}:</label><input type="date" name="${key}">`;
+                    } else {
+                        formHtml += `<label>${label}${desc ? " <span style=\"font-weight:normal;font-size:0.95em\">(" + desc + ")</span>" : ''}:</label><input name="${key}">`;
+                    }
+                });
+            } else if (fallbackFields[model]) {
+                fallbackFields[model].forEach(field => {
+                    let key = field.key || field;
+                    let label = field.label || capitalize(key.replace(/_/g, ' '));
+                    let desc = field.desc || '';
+                    if (key.toLowerCase().includes('arquivo') || key.toLowerCase().includes('file')) {
+                        formHtml += `<label>${label}:</label><input type="file" name="${key}">`;
+                    } else if (key.toLowerCase().includes('lembrete')) {
+                        formHtml += `<label>${label}:</label><input type="checkbox" name="${key}" value="1">`;
+                    } else if (key.toLowerCase().includes('data') || key.toLowerCase().includes('birthday')) {
+                        formHtml += `<label>${label}:</label><input type="date" name="${key}">`;
+                    } else {
+                        formHtml += `<label>${label}${desc ? " <span style=\"font-weight:normal;font-size:0.95em\">(" + desc + ")</span>" : ''}:</label><input name="${key}">`;
+                    }
+                });
+            } else {
+                formHtml += '<i>Preencha os campos</i><br>';
+            }
+            formHtml += `<button type="submit">Salvar</button></form>`;
+            contentDiv.innerHTML += formHtml;
+            document.getElementById('add-form').onsubmit = async (e) => {
+                e.preventDefault();
+                const form = e.target;
+                const formData = new FormData(form);
+                await addItemWithFile(model, formData);
+            };
+        }
+
+        function showEditForm(model, item) {
+            const contentDiv = document.getElementById('content');
+            let formHtml = `<h3>Editar ${capitalize(model)}</h3><form id="edit-form" enctype="multipart/form-data">`;
+            let keys = Object.keys(item);
+            keys.forEach(key => {
+                if (key === 'id' || key === 'registration_number') return;
+                if (key.toLowerCase().includes('arquivo') || key.toLowerCase().includes('file')) {
+                    formHtml += `${capitalize(key)}: <input type="file" name="${key}"><br>`;
+                } else if (typeof item[key] === 'boolean' || key.toLowerCase().includes('lembrete')) {
+                    formHtml += `${capitalize(key)}: <input type="checkbox" name="${key}" value="1" ${item[key] ? 'checked' : ''}><br>`;
+                } else if (key.toLowerCase().includes('data')) {
+                    formHtml += `${capitalize(key)}: <input type="date" name="${key}" value="${item[key] ? item[key].split('T')[0] : ''}"><br>`;
+                } else {
+                    formHtml += `${capitalize(key)}: <input name="${key}" value="${item[key]}"><br>`;
+                }
+            });
+            formHtml += `<button type="submit">Salvar</button></form>`;
+            contentDiv.innerHTML += formHtml;
+            document.getElementById('edit-form').onsubmit = async (e) => {
+                e.preventDefault();
+                const form = e.target;
+                const formData = new FormData(form);
+                await editItemWithFile(model, item, formData);
+            };
+        }
+
+        async function addItemWithFile(model, formData) {
+            const accessToken = localStorage.getItem('access_token');
+            let url = `/api/${model}/`;
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    body: formData
+                });
+                if (response.ok) {
+                    loadModelData(model);
+                } else {
+                    alert('Erro ao adicionar.');
+                }
+            } catch (error) {
+                alert('Erro ao adicionar.');
+            }
+        }
+
+        async function editItemWithFile(model, item, formData) {
+            const accessToken = localStorage.getItem('access_token');
+            let url = `/api/${model}/${item.registration_number || item.id}/`;
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    body: formData
+                });
+                if (response.ok) {
+                    loadModelData(model);
+                } else {
+                    alert('Erro ao editar.');
+                }
+            } catch (error) {
+                alert('Erro ao editar.');
+            }
+        }
+
+        async function deleteItem(model, item) {
+            if (!confirm('Tem certeza que deseja deletar?')) return;
+            const accessToken = localStorage.getItem('access_token');
+            let url = `/api/${model}/${item.registration_number || item.id}/`;
+            try {
+                const response = await fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+                if (response.ok) {
+                    loadModelData(model);
+                } else {
+                    alert('Erro ao deletar.');
+                }
+            } catch (error) {
+                alert('Erro ao deletar.');
+            }
+        }
+
+        async function refreshToken() {
+            const refreshToken = localStorage.getItem('refresh_token');
+            if (!refreshToken) {
+                window.location.href = '/login/';
+                return;
+            }
+            try {
+                const response = await fetch('/api/token/refresh/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ refresh: refreshToken })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('access_token', data.access);
+                    if (data.refresh) localStorage.setItem('refresh_token', data.refresh);
+                } else {
+                    window.location.href = '/login/';
+                }
+            } catch (error) {
+                window.location.href = '/login/';
+            }
+        }
+
+        // Chama o carregamento dos dados do usuário ao carregar a página
+        loadUserData();
+    </script>
+</body>
+</html>

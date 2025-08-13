@@ -1,0 +1,7 @@
+django>=5.2.5
+djangorestframework>=3.16.0
+djangorestframework-simplejwt
+django-cors-headers
+reportlab
+sqlparse
+asgiref

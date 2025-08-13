@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Contratos</title>
+	<style>.expansive{cursor:pointer;background:#f0f0f0;margin:5px 0;padding:10px;border-radius:5px;}.details{display:none;background:#fafafa;padding:10px;border:1px solid #ddd;border-radius:5px;}</style>
+	<script>
+		function toggleDetails(id){var el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block';}
+		const contratos=[{id:1,responsavel:'Maria Silva',contrato:'contrato_joao.pdf',turma:'1º Ano A',aluno:'João Silva',email:'maria@email.com'}];
+		window.onload=function(){let c=document.getElementById('contratos-list');contratos.forEach(ct=>{let d=document.createElement('div');d.className='expansive';d.setAttribute('onclick',`toggleDetails('contrato${ct.id}')`);d.innerHTML=`<b>Responsável:</b> ${ct.responsavel} &nbsp;|&nbsp; <b>Contrato Assinado:</b> ${ct.contrato}`;let det=document.createElement('div');det.className='details';det.id=`contrato${ct.id}`;det.innerHTML=`<b>Turma:</b> ${ct.turma}<br><b>Aluno:</b> ${ct.aluno}<br><b>Responsável:</b> ${ct.responsavel}<br><b>Email do Responsável:</b> ${ct.email}<br><b>Contrato Assinado:</b> <a href="#">${ct.contrato}</a>`;c.appendChild(d);c.appendChild(det);});}
+	</script>
+</head>
+<body>
+	<h2>Contratos</h2>
+	<div id="contratos-list"></div>
+</body>
+</html>

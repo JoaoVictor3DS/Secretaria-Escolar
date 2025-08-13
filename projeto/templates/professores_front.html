@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professores - Frontend</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        #back-button {
+            margin-bottom: 20px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Professores (API DRF)</h1>
+    <button id="back-button">Voltar para Home</button>
+    <ul id="professores-list"></ul>
+
+    <script>
+        document.getElementById('back-button').addEventListener('click', () => {
+            window.location.href = '/home/';
+        });
+
+        async function loadProfessoresData() {
+            const accessToken = localStorage.getItem('access_token');
+            if (!accessToken) {
+                window.location.href = '/login/'; // Redirect if not authenticated
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/professores/', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const ul = document.getElementById('professores-list');
+                    ul.innerHTML = ''; // Clear previous list
+                    data.forEach(professor => {
+                        const li = document.createElement('li');
+                        li.textContent = `${professor.first_name} ${professor.last_name} - ${professor.email}`;
+                        ul.appendChild(li);
+                    });
+                } else if (response.status === 401) {
+                     // Token expired or invalid, try refreshing
+                     await refreshToken();
+                     // Retry fetching data after refreshing token
+                     loadProfessoresData();
+                } else {
+                    console.error('Erro ao buscar dados de professores:', response.statusText);
+                    document.getElementById('professores-list').innerHTML = '<li>Erro ao carregar professores.</li>';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('professores-list').innerHTML = '<li>Ocorreu um erro ao carregar professores.</li>';
+            }
+        }
+
+        async function refreshToken() {
+             const refreshToken = localStorage.getItem('refresh_token');
+             if (!refreshToken) {
+                 window.location.href = '/login/';
+                 return;
+             }
+
+             try {
+                 const response = await fetch('/api/token/refresh/', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify({ refresh: refreshToken })
+                 });
+
+                 if (response.ok) {
+                     const data = await response.json();
+                     localStorage.setItem('access_token', data.access);
+                     localStorage.setItem('refresh_token', data.refresh);
+                 } else {
+                     // Refresh token failed, redirect to login
+                     window.location.href = '/login/';
+                 }
+             } catch (error) {
+                 console.error('Erro ao renovar token:', error);
+                 window.location.href = '/login/';
+             }
+         }
+
+        // Load data when the page loads
+        loadProfessoresData();
+
+    </script>
+</body>
+</html>

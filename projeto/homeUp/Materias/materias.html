@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Matérias</title>
+	<style>.expansive{cursor:pointer;background:#f0f0f0;margin:5px 0;padding:10px;border-radius:5px;}.details{display:none;background:#fafafa;padding:10px;border:1px solid #ddd;border-radius:5px;}</style>
+	<script>
+		function toggleDetails(id){var el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block';}
+		const materias=[{id:1,nome:'Matemática',professor:'Prof. Carlos Souza'}];
+		window.onload=function(){let c=document.getElementById('materias-list');materias.forEach(m=>{let d=document.createElement('div');d.className='expansive';d.setAttribute('onclick',`toggleDetails('mat${m.id}')`);d.innerHTML=`<b>Nome:</b> ${m.nome}`;let det=document.createElement('div');det.className='details';det.id=`mat${m.id}`;det.innerHTML=`<b>Nome:</b> ${m.nome}<br><b>Professor Responsável:</b> ${m.professor}`;c.appendChild(d);c.appendChild(det);});}
+	</script>
+</head>
+<body>
+	<h2>Matérias</h2>
+	<div id="materias-list"></div>
+</body>
+</html>

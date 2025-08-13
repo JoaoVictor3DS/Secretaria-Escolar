@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Desempenho Acadêmico</title>
+	<style>.expansive{cursor:pointer;background:#f0f0f0;margin:5px 0;padding:10px;border-radius:5px;}.details{display:none;background:#fafafa;padding:10px;border:1px solid #ddd;border-radius:5px;}</style>
+	<script>
+		function toggleDetails(id){var el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block';}
+		const desempenhos=[{id:1,aluno:'João Silva',turma:'1º Ano A',materia:'Matemática',b1:8.0,b2:7.5,b3:9.0,b4:8.5,media:8.25}];
+		window.onload=function(){let c=document.getElementById('desemp-list');desempenhos.forEach(d=>{let div=document.createElement('div');div.className='expansive';div.setAttribute('onclick',`toggleDetails('desemp${d.id}')`);div.innerHTML=`<b>Turma:</b> ${d.turma} &nbsp;|&nbsp; <b>Matéria:</b> ${d.materia}`;let det=document.createElement('div');det.className='details';det.id=`desemp${d.id}`;det.innerHTML=`<b>Aluno:</b> ${d.aluno}<br><b>Turma:</b> ${d.turma}<br><b>Matéria:</b> ${d.materia}<br><b>Nota 1º Bimestre:</b> ${d.b1}<br><b>Nota 2º Bimestre:</b> ${d.b2}<br><b>Nota 3º Bimestre:</b> ${d.b3}<br><b>Nota 4º Bimestre:</b> ${d.b4}<br><b>Média Final:</b> ${d.media}`;c.appendChild(div);c.appendChild(det);});}
+	</script>
+</head>
+<body>
+	<h2>Desempenho Acadêmico</h2>
+	<div id="desemp-list"></div>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="/static/projeto/styleGeral.css">
+    <style>
+        body {
+            background: #fff;
+            color: #111;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h1 {
+            color: #000;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        form {
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            max-width: 420px;
+            margin: 2rem auto;
+            padding: 2rem 2.5rem 1.5rem 2.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        form label {
+            color: #111;
+            font-weight: bold;
+            display: block;
+            margin-top: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        form input, form select {
+            width: 100%;
+            padding: 0.5rem 0.7rem;
+            border: 1.5px solid #222;
+            border-radius: 4px;
+            background: #fff;
+            color: #111;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border 0.2s;
+        }
+        form input:focus, form select:focus {
+            border: 2px solid #000;
+            outline: none;
+            background: #f7f7f7;
+        }
+        button[type="submit"] {
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: #fff;
+            color: #000;
+            border: 1.5px solid #000;
+        }
+        p, a {
+            color: #111;
+        }
+        a {
+            text-decoration: underline;
+        }
+        select[multiple], select[multiple]:focus {
+            height: 5.5em;
+            background: #fff;
+            color: #111;
+        }
+        /* Esconde as setas dos campos number para manter monocromático */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        /* Mensagens de erro/alerta */
+        .error, .alert {
+            color: #fff;
+            background: #111;
+            border: 1.5px solid #000;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+    <script src="/static/projeto/scriptGeral.js"></script>
+</head>
+<body>
+    <h1>Cadastro de Usuário</h1>
+    <form id="signup-form">
+        <div>
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+        </div>
+        <div>
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <label for="group">Grupo:</label>
+            <select id="group" name="group" required>
+                <option value="">Selecione</option>
+                <option value="devs">DEV</option>
+                <option value="cordenacao">COORDENAÇÃO</option>
+                <option value="STAFF">STAFF</option>
+                <option value="aluno(a)">ALUNO(A)</option>
+                <option value="professor(a)">PROFESSOR(A)</option>
+                <option value="responsavel">RESPONSÁVEL</option>
+            </select>
+        </div>
+        <div id="aluno-fields" style="display: none;">
+            <label for="full_name">Nome Completo:</label>
+            <input type="text" id="full_name" name="full_name">
+            <label for="phone_number_aluno">Nº do celular (--):</label>
+            <input type="text" id="phone_number_aluno" name="phone_number_aluno">
+            <label for="email_aluno">Email do aluno:</label>
+            <input type="email" id="email_aluno" name="email_aluno">
+            <label for="cpf_aluno">CPF do aluno:</label>
+            <input type="text" id="cpf_aluno" name="cpf_aluno">
+            <label for="birthday_aluno">Data de nascimento:</label>
+            <input type="date" id="birthday_aluno" name="birthday_aluno">
+            <label for="class_choices">Turmas:</label>
+            <select id="class_choices" name="class_choices">
+                <option value="">Selecione</option>
+                <option value="1A">1º Ano A</option>
+                <option value="1B">1º Ano B</option>
+                <option value="1C">1º Ano C</option>
+                <option value="2A">2º Ano A</option>
+                <option value="2B">2º Ano B</option>
+                <option value="2C">2º Ano C</option>
+                <option value="3A">3º Ano A</option>
+                <option value="3B">3º Ano B</option>
+                <option value="3C">3º Ano C</option>
+            </select>
+            <label for="responsavel">Responsável:</label>
+            <select id="responsavel" name="responsavel">
+                <!-- Options serão preenchidas dinamicamente -->
+            </select>
+        </div>
+        <div id="professor-fields" style="display: none;">
+            <label for="first_name_prof">Nome:</label>
+            <input type="text" id="first_name_prof" name="first_name_prof">
+            <label for="last_name_prof">Sobrenome:</label>
+            <input type="text" id="last_name_prof" name="last_name_prof">
+            <label for="phone_number_prof">Nº do celular (--):</label>
+            <input type="text" id="phone_number_prof" name="phone_number_prof">
+            <label for="email_prof">Email do professor:</label>
+            <input type="email" id="email_prof" name="email_prof">
+            <label for="address_prof">Endereço:</label>
+            <input type="text" id="address_prof" name="address_prof">
+            <label for="cpf_prof">CPF do professor:</label>
+            <input type="text" id="cpf_prof" name="cpf_prof">
+            <label for="registration_number_prof">Número de Registro:</label>
+            <input type="text" id="registration_number_prof" name="registration_number_prof">
+            <label for="materias_prof">Matérias:</label>
+            <select id="materias_prof" name="materias_prof" multiple>
+                <!-- Options serão preenchidas dinamicamente -->
+            </select>
+        </div>
+        <div id="responsavel-fields" style="display: none;">
+            <label for="first_name">Nome do responsável:</label>
+            <input type="text" id="first_name" name="first_name">
+            <label for="last_name">Sobrenome do responsável:</label>
+            <input type="text" id="last_name" name="last_name">
+            <label for="phone_number">Nº do celular (--):</label>
+            <input type="text" id="phone_number" name="phone_number">
+            <label for="email_resp">Email do responsável:</label>
+            <input type="email" id="email_resp" name="email_resp">
+            <label for="address">Endereço do responsável:</label>
+            <input type="text" id="address" name="address">
+            <label for="cpf">CPF do responsável:</label>
+            <input type="text" id="cpf" name="cpf">
+            <label for="birthday">Birthday:</label>
+            <input type="date" id="birthday" name="birthday">
+            <label for="alunos">Alunos do Responsável:</label>
+            <select id="alunos" name="alunos" multiple>
+                <!-- Options serão preenchidas dinamicamente -->
+            </select>
+        </div>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <p>Já tem uma conta? <a href="/login/">Faça login aqui</a>.</p>
+
+    <script>
+        document.getElementById('group').addEventListener('change', async (event) => {
+            const group = event.target.value;
+            document.getElementById('aluno-fields').style.display = group === 'aluno(a)' ? 'block' : 'none';
+            document.getElementById('professor-fields').style.display = group === 'professor(a)' ? 'block' : 'none';
+            document.getElementById('responsavel-fields').style.display = group === 'responsavel' ? 'block' : 'none';
+
+            if (group === 'aluno(a)') {
+                // Preencher responsáveis
+                try {
+                    const response = await fetch('/api/responsaveis/');
+                    if (response.ok) {
+                        const responsaveis = await response.json();
+                        const select = document.getElementById('responsavel');
+                        select.innerHTML = '';
+                        responsaveis.forEach(r => {
+                            const option = document.createElement('option');
+                            option.value = r.id;
+                            option.textContent = r.first_name + ' ' + r.last_name;
+                            select.appendChild(option);
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar responsáveis:', error);
+                }
+            } else if (group === 'professor(a)') {
+                // Preencher matérias (sem autenticação)
+                try {
+                    const response = await fetch('/api/materias/?public=1');
+                    if (response.ok) {
+                        const materias = await response.json();
+                        const select = document.getElementById('materias_prof');
+                        select.innerHTML = '';
+                        // Suporte para resposta como array ou como results (caso paginado)
+                        const lista = Array.isArray(materias) ? materias : (materias.results || []);
+                        lista.forEach(m => {
+                            const option = document.createElement('option');
+                            option.value = m.id;
+                            option.textContent = m.name;
+                            select.appendChild(option);
+                        });
+                    } else {
+                        document.getElementById('materias_prof').innerHTML = '<option disabled>Não foi possível carregar as matérias</option>';
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar matérias:', error);
+                    document.getElementById('materias_prof').innerHTML = '<option disabled>Erro ao carregar matérias</option>';
+                }
+            } else if (group === 'responsavel') {
+                // Preencher alunos
+                try {
+                    const response = await fetch('/api/alunos/');
+                    if (response.ok) {
+                        const alunos = await response.json();
+                        const alunosSelect = document.getElementById('alunos');
+                        alunosSelect.innerHTML = '';
+                        alunos.forEach(aluno => {
+                            const option = document.createElement('option');
+                            option.value = aluno.registration_number;
+                            option.textContent = aluno.full_name;
+                            alunosSelect.appendChild(option);
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar alunos:', error);
+                }
+            }
+        });
+
+        document.getElementById('signup-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const group = document.getElementById('group').value;
+            const formData = {
+                username: document.getElementById('username')?.value,
+                email: document.getElementById('email')?.value,
+                password: document.getElementById('password')?.value,
+                group
+            };
+            if (group === 'responsavel') {
+                formData.first_name = document.getElementById('first_name').value;
+                formData.last_name = document.getElementById('last_name').value;
+                formData.phone_number = document.getElementById('phone_number').value;
+                formData.address = document.getElementById('address').value;
+                formData.cpf = document.getElementById('cpf').value;
+                formData.birthday = document.getElementById('birthday').value;
+                formData.email = document.getElementById('email_resp').value;
+                formData.alunos = Array.from(document.getElementById('alunos').selectedOptions).map(option => option.value);
+            } else if (group === 'aluno(a)') {
+                formData.full_name = document.getElementById('full_name').value;
+                formData.phone_number_aluno = document.getElementById('phone_number_aluno').value;
+                formData.email_aluno = document.getElementById('email_aluno').value;
+                formData.cpf_aluno = document.getElementById('cpf_aluno').value;
+                formData.birthday_aluno = document.getElementById('birthday_aluno').value;
+                formData.class_choices = document.getElementById('class_choices').value;
+                formData.responsavel = document.getElementById('responsavel').value;
+            } else if (group === 'professor(a)') {
+                formData.first_name = document.getElementById('first_name_prof').value;
+                formData.last_name = document.getElementById('last_name_prof').value;
+                formData.phone_number = document.getElementById('phone_number_prof').value;
+                formData.email = document.getElementById('email_prof').value;
+                formData.address = document.getElementById('address_prof').value;
+                formData.cpf = document.getElementById('cpf_prof').value;
+                formData.registration_number = document.getElementById('registration_number_prof').value;
+                formData.materias = Array.from(document.getElementById('materias_prof').selectedOptions).map(option => option.value);
+            }
+            try {
+                const response = await fetch('/api/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Usuário cadastrado com sucesso! Redirecionando para o login.');
+                    window.location.href = '/login/';
+                } else {
+                    alert('Erro no cadastro: ' + JSON.stringify(data));
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro ao tentar cadastrar o usuário.');
+            }
+        });
+    </script>
+</body>
+</html>

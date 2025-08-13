@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Alunos</title>
+	<style>
+		.expansive {cursor:pointer; background:#f0f0f0; margin:5px 0; padding:10px; border-radius:5px;}
+		.details {display:none; background:#fafafa; padding:10px; border:1px solid #ddd; border-radius:5px;}
+	</style>
+	<script>
+		function toggleDetails(id) {
+			var el = document.getElementById(id);
+			el.style.display = el.style.display === 'block' ? 'none' : 'block';
+		}
+		// Exemplo de dados, substitua por dados dinâmicos do backend
+		const alunos = [
+			{
+				id: 1,
+				nome: 'João Silva',
+				serie: '1º Ano A',
+				grupo: 'Alunos',
+				telefone: '(11) 91234-5678',
+				email: 'joao@email.com',
+				cpf: '12345678901',
+				nascimento: '10/02/2010',
+				responsavel: 'Maria Silva'
+			},
+			// ... outros alunos
+		];
+		window.onload = function() {
+			let container = document.getElementById('alunos-list');
+			alunos.forEach(aluno => {
+				let div = document.createElement('div');
+				div.className = 'expansive';
+				div.setAttribute('onclick', `toggleDetails('aluno${aluno.id}')`);
+				div.innerHTML = `<b>Nome:</b> ${aluno.nome} &nbsp;|&nbsp; <b>Série:</b> ${aluno.serie} &nbsp;|&nbsp; <b>Grupo:</b> ${aluno.grupo}`;
+				let details = document.createElement('div');
+				details.className = 'details';
+				details.id = `aluno${aluno.id}`;
+				details.innerHTML = `
+					<b>Nome Completo:</b> ${aluno.nome}<br>
+					<b>Telefone:</b> ${aluno.telefone}<br>
+					<b>Email:</b> ${aluno.email}<br>
+					<b>CPF:</b> ${aluno.cpf}<br>
+					<b>Data de Nascimento:</b> ${aluno.nascimento}<br>
+					<b>Série:</b> ${aluno.serie}<br>
+					<b>Responsável:</b> ${aluno.responsavel}<br>
+					<b>Grupo:</b> ${aluno.grupo}<br>
+				`;
+				container.appendChild(div);
+				container.appendChild(details);
+			});
+		}
+	</script>
+</head>
+<body>
+	<h2>Alunos</h2>
+	<div id="alunos-list"></div>
+</body>
+</html>

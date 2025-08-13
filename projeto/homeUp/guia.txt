@@ -1,0 +1,45 @@
+verifique o models no criterio sintaxe dos formularios das classes:
+(Responsaveis
+Alunos
+Materias
+Professores
+Turmas
+Contratos
+Notas
+Desempenhoacademico
+Presencas
+Agendas
+Livros)
+
+motivo: ex, os dados para os usuarios(leigos) apareçe assim:(id: 2 | first_name: Professorinha | last_name: Da Silvinha).
+
+tarefa: use o modelo do models para escrever nas pastas do homeUP uma forma eficiente de mostrar ao usuario(leigo) dados mais intuitivos e de facil compreesão
+
+resultado esperado: cada dado apareça(conteudo simples) o mais eficiente como uma aba expansiva(compactado fica lista horizontal)(espandida abre na vertical) , que se expanda com o clique e mostre todos os dados do form(conteudo completo)
+
+exemplo de expectativa:
+aba compactada:
+-Alunos:nome ,serie/classe ,Grupo;
+-Responsavel:nome ,telefone ,aluno(dependentes do responsavel);
+-Materia:nome;
+-Professor:nome ,Materias;
+-Turma:nome ,turma ,representante;
+-Contrato:responsavel ,signed_contract;
+-Nota:turma ,materia;
+-DesempenhoAcademico:turma ,materia;
+-Presenca:aluno ,status;
+-Agenda:usuario ,titulo ,data_evento;
+-Livro:titulo ,status;
+
+aba expandida:
+-Alunos:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos;
+-Responsavel:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos;
+-Materia:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos;
+-Professor:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos;
+-Turma:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos;
+-Contrato:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos;
+-Nota:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos ,uma forma intuitiva dando enfase nas aluno,turma,nota_presenca,nota_atividade,nota_avaliativa,nota_final;
+-DesempenhoAcademico:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos ,uma forma intuitiva dando enfase nas notas bimestrais e nota_final;
+-Presenca:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos ,uma forma intuitiva dando enfase nas notas bimestrais e nota_final;;
+-Agenda:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos;
+-Livro:abre toda a aba com dados em estilo e formato(sintaxe) intutiva para leigos ,uma forma intuitiva dando enfase nas aluno ,data ,status e observacao;

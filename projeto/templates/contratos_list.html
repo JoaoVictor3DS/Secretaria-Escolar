@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Contratos</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Aluno</th>
+        <th>Responsável</th>
+        <th>Turma</th>
+        <th>Contrato</th>
+        <th>Ações</th>
+    </tr>
+    {% for contrato in contratos %}
+    <tr>
+        <td>{{ contrato.id }}</td>
+        <td>{{ contrato.aluno }}</td>
+        <td>{{ contrato.responsavel }}</td>
+        <td>{{ contrato.turma }}</td>
+        <td>{% if contrato.signed_contract %}<a href="{{ contrato.signed_contract.url }}" target="_blank">Ver</a>{% else %}---{% endif %}</td>
+        <td>
+            <a href="{% url 'contrato_download' contrato.id %}">Baixar</a>
+            {% if 'cordenacao' in user_groups or 'devs' in user_groups %}
+                | <a href="{% url 'contrato_edit' contrato.id %}">Editar</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
