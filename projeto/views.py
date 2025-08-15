@@ -343,40 +343,11 @@ class ResponsavelDetailView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 # Serializers para os outros modelos
-class TurmaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Turma
-        fields = '__all__'
+from .serializers import TurmaSerializer
 
-class ContratoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Contrato
-        fields = '__all__'
+from .serializers import ContratoSerializer, NotaSerializer, DesempenhoAcademicoSerializer, PresencaSerializer, AgendaSerializer, LivroSerializer
 
-class NotaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Nota
-        fields = '__all__'
 
-class DesempenhoAcademicoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DesempenhoAcademico
-        fields = '__all__'
-
-class PresencaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Presenca
-        fields = '__all__'
-
-class AgendaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Agenda
-        fields = '__all__'
-
-class LivroSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Livro
-        fields = '__all__'
 
 # ViewSets para os outros modelos
 class MateriaViewSet(viewsets.ModelViewSet):
