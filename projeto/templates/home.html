@@ -237,6 +237,14 @@
     let usuarios = [];
     let alunos = [];
     let materias = [];
+    let professores = [];
+    let turmas = [];
+    let contratos = [];
+    let notas = [];
+    let desempenhoacademico = [];
+    let presencas = [];
+    let agendas = [];
+    let livros = [];
 
         // Função utilitária para buscar nome pelo id
         function getNomeUsuario(id) {
@@ -269,21 +277,55 @@
         let userModelsPermissions = {};
 
         async function loadUserData() {
-            // Carregar todos os usuários, alunos e matérias para os arrays globais
+            // Carregar todos os usuários, alunos, materias e demais models para os arrays globais
             try {
-                const [usersResp, alunosResp, materiasResp] = await Promise.all([
+                const [usersResp, alunosResp, materiasResp, professoresResp, turmasResp, contratosResp, notasResp, desempenhoResp, presencasResp, agendasResp, livrosResp] = await Promise.all([
                     fetch('/api/usuarios/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
                     fetch('/api/alunos/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
-                    fetch('/api/materias/', { headers: { 'Authorization': `Bearer ${accessToken}` } })
+                    fetch('/api/materias/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/professores/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/turmas/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/contratos/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/notas/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/desempenhoacademico/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/presencas/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/agendas/', { headers: { 'Authorization': `Bearer ${accessToken}` } }),
+                    fetch('/api/livros/', { headers: { 'Authorization': `Bearer ${accessToken}` } })
                 ]);
                 usuarios = usersResp.ok ? await usersResp.json() : [];
                 alunos = alunosResp.ok ? await alunosResp.json() : [];
                 materias = materiasResp.ok ? await materiasResp.json() : [];
+                professores = professoresResp.ok ? await professoresResp.json() : [];
+                turmas = turmasResp.ok ? await turmasResp.json() : [];
+                contratos = contratosResp.ok ? await contratosResp.json() : [];
+                notas = notasResp.ok ? await notasResp.json() : [];
+                desempenhoacademico = desempenhoResp.ok ? await desempenhoResp.json() : [];
+                presencas = presencasResp.ok ? await presencasResp.json() : [];
+                agendas = agendasResp.ok ? await agendasResp.json() : [];
+                livros = livrosResp.ok ? await livrosResp.json() : [];
             } catch (e) {
                 usuarios = [];
                 alunos = [];
                 materias = [];
+                professores = [];
+                turmas = [];
+                contratos = [];
+                notas = [];
+                desempenhoacademico = [];
+                presencas = [];
+                agendas = [];
+                livros = [];
             }
+        function getNomeProfessor(id) {
+            if (!id) return '--';
+            const professor = professores.find(p => p.id === id);
+            return professor ? (professor.full_name || professor.nome || professor.first_name || professor.username || '--') : '--';
+        }
+        function getNomeTurma(id) {
+            if (!id) return '--';
+            const turma = turmas.find(t => t.id === id);
+            return turma ? (turma.turma || turma.nome || '--') : '--';
+        }
             const accessToken = localStorage.getItem('access_token');
             if (!accessToken) {
                 window.location.href = '/login/';
@@ -437,27 +479,27 @@
         function getModelCompact(model, item) {
             switch(model) {
                 case 'alunos':
-                    return `<b>Nome:</b> ${item.full_name || item.nome || ''} &nbsp;|&nbsp; <b>Série:</b> ${item.class_choices || item.serie || ''} &nbsp;|&nbsp; <b>Grupo:</b> Alunos`;
+                    return `<b>Nome:</b> ${(item.full_name || item.nome || '--')} &nbsp;|&nbsp; <b>Série:</b> ${(item.class_choices || item.serie || '--')} &nbsp;|&nbsp; <b>Responsável:</b> ${(item.responsavel_nome || '--')} &nbsp;|&nbsp; <b>Grupo:</b> Alunos`;
                 case 'responsaveis':
-                    return `<b>Nome:</b> ${item.first_name || item.nome || ''} ${item.last_name || ''} &nbsp;|&nbsp; <b>Telefone:</b> ${item.phone_number || item.telefone || ''} &nbsp;|&nbsp; <b>Alunos:</b> ${Array.isArray(item.alunos) ? item.alunos.map(getNomeAluno).join(', ') : (item.alunos_nomes || '--')}`;
+                    return `<b>Nome:</b> ${(item.first_name || item.nome || '--')} ${(item.last_name || '')} &nbsp;|&nbsp; <b>Telefone:</b> ${(item.phone_number || item.telefone || '--')} &nbsp;|&nbsp; <b>Alunos:</b> ${(Array.isArray(item.alunos_nomes) && item.alunos_nomes.length > 0) ? item.alunos_nomes.join(', ') : '--'}`;
                 case 'materias':
-                    return `<b>Nome:</b> ${item.name || item.nome || ''}`;
+                    return `<b>Nome:</b> ${(item.name || item.nome || '--')} &nbsp;|&nbsp; <b>Professor:</b> ${(item.professor_nome || getNomeProfessor(item.professor) || '--')}`;
                 case 'professores':
-                    return `<b>Nome:</b> ${item.first_name || item.nome || ''} ${item.last_name || ''} &nbsp;|&nbsp; <b>Matérias:</b> ${Array.isArray(item.materias) ? item.materias.map(getNomeMateria).join(', ') : (item.materias_nomes || '--')}`;
+                    return `<b>Nome:</b> ${(item.first_name || item.nome || '--')} ${(item.last_name || '')} &nbsp;|&nbsp; <b>Matérias:</b> ${(Array.isArray(item.materias_nomes) && item.materias_nomes.length > 0) ? item.materias_nomes.join(', ') : '--'}`;
                 case 'turmas':
-                    return `<b>Turma:</b> ${item.turma || ''} &nbsp;|&nbsp; <b>Representante:</b> ${(item.representante_nome || getNomeAluno(item.representante) || (item.representante && (item.representante.full_name || item.representante.nome)) || '--')}`;
+                    return `<b>Turma:</b> ${(item.turma || '--')} &nbsp;|&nbsp; <b>Matérias:</b> ${(Array.isArray(item.materias_nomes) && item.materias_nomes.length > 0) ? item.materias_nomes.join(', ') : '--'} &nbsp;|&nbsp; <b>Representante:</b> ${(item.representante_nome || '--')}`;
                 case 'contratos':
-                    return `<b>Responsável:</b> ${(item.responsavel_nome || getNomeUsuario(item.responsavel) || '')} &nbsp;|&nbsp; <b>Contrato Assinado:</b> ${(item.signed_contract || '')}`;
+                    return `<b>Responsável:</b> ${(item.responsavel_nome || getNomeUsuario(item.responsavel) || '--')} &nbsp;|&nbsp; <b>Aluno:</b> ${(item.aluno_nome || getNomeAluno(item.aluno) || '--')} &nbsp;|&nbsp; <b>Contrato Assinado:</b> ${(item.signed_contract || '--')}`;
                 case 'notas':
-                    return `<b>Turma:</b> ${item.turma_nome || (item.turma && (item.turma.turma || item.turma.nome)) || ''} &nbsp;|&nbsp; <b>Matéria:</b> ${item.materia_nome || getNomeMateria(item.materia) || (item.materia && (item.materia.name || item.materia.nome)) || ''}`;
+                    return `<b>Aluno:</b> ${(item.aluno_nome || getNomeAluno(item.aluno) || '--')} &nbsp;|&nbsp; <b>Turma:</b> ${(item.turma_nome || getNomeTurma(item.turma) || '--')} &nbsp;|&nbsp; <b>Matéria:</b> ${(item.materia_nome || getNomeMateria(item.materia) || '--')}`;
                 case 'desempenhoacademico':
-                    return `<b>Turma:</b> ${item.turma_nome || (item.turma && (item.turma.turma || item.turma.nome)) || ''} &nbsp;|&nbsp; <b>Matéria:</b> ${item.materia_nome || getNomeMateria(item.materia) || (item.materia && (item.materia.name || item.materia.nome)) || ''}`;
+                    return `<b>Aluno:</b> ${(item.aluno_nome || getNomeAluno(item.aluno) || '--')} &nbsp;|&nbsp; <b>Turma:</b> ${(item.turma_nome || getNomeTurma(item.turma) || '--')} &nbsp;|&nbsp; <b>Matéria:</b> ${(item.materia_nome || getNomeMateria(item.materia) || '--')}`;
                 case 'presencas':
-                    return `<b>Aluno:</b> ${item.aluno_nome || getNomeAluno(item.aluno) || item.aluno?.full_name || item.aluno || ''} &nbsp;|&nbsp; <b>Status:</b> ${item.status || ''}`;
+                    return `<b>Aluno:</b> ${(item.aluno_nome || getNomeAluno(item.aluno) || '--')} &nbsp;|&nbsp; <b>Status:</b> ${(item.status || '--')}`;
                 case 'agendas':
-                    return `<b>Usuário:</b> ${getNomeUsuario(item.usuario) || item.usuario || ''} &nbsp;|&nbsp; <b>Título:</b> ${item.titulo || ''} &nbsp;|&nbsp; <b>Data:</b> ${formatDate(item.data_evento)}`;
+                    return `<b>Usuário:</b> ${(item.usuario_nome || getNomeUsuario(item.usuario) || '--')} &nbsp;|&nbsp; <b>Título:</b> ${(item.titulo || '--')} &nbsp;|&nbsp; <b>Data:</b> ${formatDate(item.data_evento)}`;
                 case 'livros':
-                    return `<b>Título:</b> ${item.titulo || ''} &nbsp;|&nbsp; <b>Status:</b> ${item.status || ''}`;
+                    return `<b>Título:</b> ${(item.titulo || '--')} &nbsp;|&nbsp; <b>Status:</b> ${(item.status || '--')} &nbsp;|&nbsp; <b>Usuário em uso:</b> ${(item.usuario_em_uso_nome || getNomeUsuario(item.usuario_em_uso) || '--')}`;
                 default:
                     return getModelDisplay(model, item);
             }
@@ -532,9 +574,9 @@
                     return `
                         <b>Turma:</b> ${(item.turma || '--')}<br>
                         <b>Matérias:</b> ${(Array.isArray(item.materias_nomes) && item.materias_nomes.length > 0) ? item.materias_nomes.join(', ') : '--'}<br>
-                        <b>Representante:</b> ${(item.representante_nome || getNomeAluno(item.representante) || (item.representante && (item.representante.full_name || item.representante.nome)) || '--')}<br>
-                        <b>Vice-Representante:</b> ${(item.vice_representante_nome || getNomeAluno(item.vice_representante) || (item.vice_representante && (item.vice_representante.full_name || item.vice_representante.nome)) || '--')}<br>
-                        <b>Padrinho:</b> ${(item.padrinho_nome || getNomeUsuario(item.padrinho) || (item.padrinho && (item.padrinho.full_name || item.padrinho.nome)) || '--')}
+                        <b>Representante:</b> ${(item.representante_nome || '--')}<br>
+                        <b>Vice-Representante:</b> ${(item.vice_representante_nome || '--')}<br>
+                        <b>Padrinho:</b> ${(item.padrinho_nome || '--')}
                         ${renderExtraFields(item, shown)}
                     `;
                 }
@@ -587,9 +629,9 @@
                     `;
                 }
                 case 'agendas': {
-                    let shown = ['usuario','titulo','descricao','data_evento','arquivo','lembrete'];
+                    let shown = ['usuario','titulo','descricao','data_evento','arquivo','lembrete','usuario_nome'];
                     return `
-                        <b>Usuário:</b> ${(getNomeUsuario(item.usuario) || item.usuario || '--')}<br>
+                        <b>Usuário:</b> ${(item.usuario_nome || getNomeUsuario(item.usuario) || item.usuario || '--')}<br>
                         <b>Título:</b> ${(item.titulo || '--')}<br>
                         <b>Descrição:</b> ${(item.descricao || '--')}<br>
                         <b>Data do Evento:</b> ${formatDate(item.data_evento) || '--'}<br>
@@ -605,7 +647,7 @@
                         <b>Autor:</b> ${(item.autor || '--')}<br>
                         <b>Resumo:</b> ${(item.resumo || '--')}<br>
                         <b>Status:</b> ${(item.status || '--')}<br>
-                        <b>Usuário em Uso:</b> ${(getNomeUsuario(item.usuario_em_uso) || item.usuario_em_uso_nome || (item.usuario_em_uso && (item.usuario_em_uso.full_name || item.usuario_em_uso.nome)) || '--')}
+                        <b>Usuário em Uso:</b> ${(item.usuario_em_uso_nome || getNomeUsuario(item.usuario_em_uso) || (item.usuario_em_uso && (item.usuario_em_uso.full_name || item.usuario_em_uso.nome)) || '--')}
                         ${renderExtraFields(item, shown)}
                     `;
                 }
