@@ -1,4 +1,4 @@
-passo a passo para melhorar o projeto de secretaria escolar:
+o passo a passo para melhorar o projeto de secretaria escolar:
 
 Projeto Secretaria Python + Django
 Data termino de auto avaliação: 18/06
