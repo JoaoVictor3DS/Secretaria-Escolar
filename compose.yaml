@@ -8,7 +8,7 @@ services:
       - db_data:/api/data
     develop:
       watch:
-        - action: sync
+        - action: rebuild
           path: .
           target: /api
     networks:
