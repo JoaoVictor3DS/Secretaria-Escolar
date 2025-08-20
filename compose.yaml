@@ -1,0 +1,22 @@
+services:
+  api:
+    build: .
+    image: webcorvus/secretaria-escolar-api:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - db_data:/api/data
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /api
+    networks:
+      - private
+
+networks:
+  private:
+    driver: bridge
+
+volumes:
+  db_data:
